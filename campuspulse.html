@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusPulse — AI-Driven Academic Performance Intelligence for Indian Colleges</title>
+  <meta name="description" content="CampusPulse gives Principals, HODs and management real-time pass rate predictions, at-risk student alerts, and department-level performance intelligence — before exam season reveals the damage." />
+  <meta property="og:title"       content="CampusPulse — Stop Reacting to Results. Start Predicting Success." />
+  <meta property="og:description" content="India's first AI-driven Academic Performance Suite that gives college management institutional intelligence — not just faculty reports." />
+  <meta property="og:type"        content="website" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <meta name="theme-color"        content="#0D3B2E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{GA4_ID}}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '{{GA4_ID}}');
+  </script>
+
+  <!-- Hotjar -->
+  <script>
+    (function(h,o,t,j,a,r){
+      h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+      h._hjSettings={hjid:'{{HOTJAR_ID}}',hjsv:6};
+      a=o.getElementsByTagName('head')[0];
+      r=o.createElement('script');r.async=1;
+      r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+      a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  </script>
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','{{META_PIXEL_ID}}');
+    fbq('track','PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id={{META_PIXEL_ID}}&ev=PageView&noscript=1" />
+  </noscript>
+
+  <style>
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:      #0D3B2E;
+      --green-dk:   #081f18;
+      --green-mid:  #0f4a39;
+      --teal:       #1D9E75;
+      --teal-dk:    #178a63;
+      --teal-lt:    rgba(29,158,117,0.12);
+      --offwhite:   #F5F7F5;
+      --amber:      #E8892C;
+      --amber-lt:   rgba(232,137,44,0.13);
+      --slate:      #5A7A70;
+      --white:      #ffffff;
+      --r:          14px;
+      --r-sm:       8px;
+      --r-lg:       20px;
+      --shadow-sm:  0 2px 14px rgba(13,59,46,0.06);
+      --shadow-md:  0 8px 32px rgba(13,59,46,0.12);
+      --shadow-lg:  0 24px 72px rgba(13,59,46,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--offwhite);
+      color: var(--green);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── NAV ─── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    #nav.scrolled {
+      background: rgba(245,247,245,0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(13,59,46,0.08);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.55rem;
+      color: var(--teal);
+      letter-spacing: -0.3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .logo span { color: var(--green); }
+    .nav-cta {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--teal-dk); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      padding: 116px 0 88px;
+      overflow: hidden;
+      background: var(--offwhite);
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(29,158,117,0.14) 1.2px, transparent 1.2px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform;
+    }
+    .orb-1 {
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(29,158,117,0.16) 0%, transparent 70%);
+      top: -160px; right: -80px;
+      animation: orb-drift-1 22s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(13,59,46,0.14) 0%, transparent 70%);
+      bottom: -80px; left: -60px;
+      animation: orb-drift-2 28s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(232,137,44,0.08) 0%, transparent 70%);
+      top: 35%; left: 38%;
+      animation: orb-drift-3 18s ease-in-out infinite;
+    }
+    @keyframes orb-drift-1 {
+      0%, 100% { transform: translate(0px, 0px); }
+      25%  { transform: translate(-45px, 35px); }
+      50%  { transform: translate(25px, -25px); }
+      75%  { transform: translate(40px, 30px); }
+    }
+    @keyframes orb-drift-2 {
+      0%, 100% { transform: translate(0px, 0px); }
+      33%  { transform: translate(50px, -35px); }
+      66%  { transform: translate(-30px, 45px); }
+    }
+    @keyframes orb-drift-3 {
+      0%, 100% { transform: translate(0px, 0px) scale(1); }
+      50%  { transform: translate(-25px, -18px) scale(1.12); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 52px;
+      align-items: center;
+    }
+    .hero-text { text-align: center; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-lt);
+      border: 1px solid rgba(29,158,117,0.3);
+      color: var(--teal);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 24px;
+    }
+    .hero-text h1 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(2.1rem, 6.5vw, 3.4rem);
+      line-height: 1.13;
+      color: var(--green);
+      margin-bottom: 22px;
+    }
+    .hero-sub {
+      font-size: clamp(0.97rem, 2.4vw, 1.1rem);
+      color: var(--slate);
+      line-height: 1.78;
+      margin-bottom: 38px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 17px 34px;
+      border-radius: 50px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      box-shadow: 0 4px 20px rgba(29,158,117,0.3);
+    }
+    .btn-primary:hover {
+      background: var(--teal-dk);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(29,158,117,0.38);
+    }
+    .hero-trust {
+      margin-top: 20px;
+      font-size: 0.76rem;
+      color: var(--slate);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hero-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .hero-trust-item::before {
+      content: '✓';
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    /* ── Hero card (Management Overview) ── */
+    .hero-card-wrap {
+      animation: float-card 7s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes float-card {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-14px); }
+    }
+    .hero-card {
+      background: var(--green);
+      border-radius: var(--r-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hc-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .hc-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .hc-live {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.35);
+      font-weight: 600;
+    }
+    .hc-live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: live-blink 2.2s ease-in-out infinite;
+    }
+    .hc-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+    .hc-sub {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+    .hc-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+    .hc-bar-track {
+      height: 7px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 4px;
+      position: relative;
+    }
+    .hc-bar-fill {
+      height: 100%;
+      width: 76%;
+      background: var(--amber);
+      border-radius: 4px;
+    }
+    .hc-bar-target {
+      position: absolute;
+      top: -3px; bottom: -3px;
+      width: 2px;
+      background: rgba(255,255,255,0.4);
+      left: 85%;
+      border-radius: 2px;
+    }
+    .hc-bar-legend {
+      display: flex;
+      justify-content: flex-end;
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 14px;
+    }
+    .hc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(220,50,47,0.15);
+      border: 1px solid rgba(220,50,47,0.3);
+      color: #ff6b6b;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      width: 100%;
+      animation: badge-pulse 3.5s ease-in-out infinite;
+    }
+    .hc-badge::before { content: '⚠'; font-size: 0.76rem; }
+    @keyframes badge-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220,50,47,0); }
+      50%       { box-shadow: 0 0 0 5px rgba(220,50,47,0.1); }
+    }
+    .hc-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+      margin-bottom: 14px;
+    }
+    .hc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 9px;
+      font-size: 0.72rem;
+    }
+    .hc-row-label { color: rgba(255,255,255,0.45); }
+    .hc-row-val   { color: var(--white); font-weight: 600; }
+    .hc-row-val.good  { color: #4ecb9e; }
+    .hc-row-val.warn  { color: #f0a554; }
+    .hc-row-val.bad   { color: #ff6b6b; }
+
+    /* ─── SOCIAL PROOF ─── */
+    #social-proof {
+      background: var(--green);
+      padding: 44px 20px;
+      text-align: center;
+    }
+    .proof-label {
+      color: rgba(157,196,183,0.7);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+    }
+    .proof-states {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 22px;
+      font-weight: 500;
+      line-height: 1.8;
+    }
+    .proof-states strong { color: rgba(255,255,255,0.8); font-weight: 700; }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .badge-grey { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.38); border: 1px solid rgba(255,255,255,0.09); }
+    .badge-teal { background: rgba(29,158,117,0.18); color: var(--teal); border: 1px solid rgba(29,158,117,0.32); }
+    .badge-amber { background: rgba(232,137,44,0.15); color: #f0a554; border: 1px solid rgba(232,137,44,0.28); }
+
+    /* ─── PAIN / STATS ─── */
+    #pain { padding: 88px 0 80px; }
+    #pain h2 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.55rem, 4vw, 2.3rem);
+      line-height: 1.25;
+      color: var(--green);
+      max-width: 700px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 44px;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--r);
+      padding: 30px 26px;
+      border-left: 5px solid var(--amber);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .stat-number {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 2.9rem;
+      font-weight: 700;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .stat-card p {
+      font-size: 0.9rem;
+      color: var(--slate);
+      line-height: 1.6;
+    }
+    .pain-body {
+      font-size: 1rem;
+      color: var(--slate);
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 1.85;
+    }
+
+    /* ─── FEATURES ─── */
+    #features {
+      padding: 80px 0;
+      background: var(--white);
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    #features h2 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .features-sub {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--slate);
+      max-width: 600px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--offwhite);
+      border-radius: var(--r);
+      padding: 28px 24px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba(13,59,46,0.06);
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .feature-card.featured {
+      background: var(--green);
+      border-color: transparent;
+      grid-column: 1 / -1;
+    }
+    .feature-card.featured h3,
+    .feature-card.featured p  { color: rgba(255,255,255,0.88); }
+    .feature-card.featured h3 { color: var(--white); font-size: 1.15rem; }
+    .feature-card.featured .feature-icon { filter: none; }
+    .feature-card.featured .feat-tag {
+      display: inline-block;
+      background: rgba(232,137,44,0.22);
+      color: #f0a554;
+      border: 1px solid rgba(232,137,44,0.35);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .feature-card.featured .feature-icon {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .feature-icon {
+      font-size: 1.5rem;
+      margin-bottom: 14px;
+      display: block;
+      filter: sepia(1) saturate(3) hue-rotate(120deg) brightness(0.85);
+    }
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--slate);
+      line-height: 1.68;
+    }
+    /* Management badge on feature cards */
+    .for-mgmt {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--teal-lt);
+      color: var(--teal);
+      border: 1px solid rgba(29,158,117,0.25);
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    /* ─── AT-RISK RADAR ─── */
+    #radar {
+      background: var(--green);
+      padding: 88px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    #radar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(29,158,117,0.1) 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    #radar::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(29,158,117,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .radar-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .radar-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(232,137,44,0.18);
+      border: 1px solid rgba(232,137,44,0.32);
+      color: #f0a554;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+    }
+    .radar-eyebrow::before { content: '⚡'; }
+    #radar h2 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .radar-desc {
+      font-size: clamp(0.97rem, 2.2vw, 1.08rem);
+      color: rgba(157,196,183,0.85);
+      line-height: 1.82;
+      margin-bottom: 52px;
+    }
+    .slip-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: left;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .st-item {
+      display: flex;
+      gap: 18px;
+      position: relative;
+    }
+    .st-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      width: 2px;
+      height: calc(100% - 8px);
+      background: rgba(255,255,255,0.1);
+    }
+    .st-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .st-dot {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .st-dot-red   { background: rgba(220,50,47,0.18); color: #ff6b6b; border: 1px solid rgba(220,50,47,0.3); }
+    .st-dot-amber { background: rgba(232,137,44,0.18); color: #f0a554; border: 1px solid rgba(232,137,44,0.3); }
+    .st-dot-teal  { background: rgba(29,158,117,0.22); color: #4ecb9e; border: 1px solid rgba(29,158,117,0.35); }
+    .st-body { padding: 8px 0 32px; }
+    .st-item:last-child .st-body { padding-bottom: 0; }
+    .st-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .st-desc {
+      font-size: 0.86rem;
+      color: rgba(157,196,183,0.72);
+      line-height: 1.6;
+    }
+    .st-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+    .tag-red   { background: rgba(220,50,47,0.18); color: #ff6b6b; }
+    .tag-amber { background: rgba(232,137,44,0.18); color: #f0a554; }
+    .tag-teal  { background: rgba(29,158,117,0.2);  color: #4ecb9e; }
+
+    /* ─── PRODUCT VISUAL ─── */
+    #product-visual {
+      padding: 88px 0;
+      background: var(--offwhite);
+    }
+    #product-visual > .container { text-align: center; }
+    #product-visual h2 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .pv-sub {
+      color: var(--slate);
+      font-size: 0.97rem;
+      margin-bottom: 48px;
+    }
+    .dashboard-card {
+      background: var(--green);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: 0 36px 90px rgba(13,59,46,0.22);
+      text-align: left;
+    }
+    .db-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 22px;
+      background: rgba(0,0,0,0.22);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .db-topbar-left { display: flex; align-items: center; gap: 10px; }
+    .db-live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: live-blink 2.2s ease-in-out infinite;
+    }
+    @keyframes live-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+    .db-topbar-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+    }
+    .db-topbar-meta {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.38);
+      font-weight: 500;
+    }
+    .db-metrics {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .db-metric {
+      background: var(--green);
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .db-metric-val {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .db-metric-label {
+      font-size: 0.6rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+    .db-metric-badge {
+      display: inline-block;
+      font-size: 0.56rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .dbm-red   { background: rgba(220,50,47,0.2);  color: #ff6b6b; }
+    .dbm-amber { background: rgba(232,137,44,0.2); color: #f0a554; }
+    .dbm-teal  { background: rgba(29,158,117,0.2); color: var(--teal); }
+
+    .db-table-wrap { overflow-x: auto; padding: 0 20px 20px; }
+    .db-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 520px;
+    }
+    .db-table th {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 16px 10px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      white-space: nowrap;
+    }
+    .db-table td {
+      font-size: 0.78rem;
+      color: var(--white);
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: middle;
+    }
+    .db-table tr:last-child td { border-bottom: none; }
+    .db-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .grade-pill {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .gp-red   { background: rgba(220,50,47,0.18);  color: #ff6b6b; }
+    .gp-green { background: rgba(29,158,117,0.18); color: #4ecb9e; }
+    .gp-amber { background: rgba(232,137,44,0.18); color: #f0a554; }
+    .status-dot { font-size: 0.7rem; margin-right: 4px; }
+    .visual-caption {
+      margin-top: 22px;
+      font-size: 0.88rem;
+      color: var(--slate);
+      font-style: italic;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    #how-it-works {
+      padding: 88px 0;
+      background: var(--white);
+    }
+    #how-it-works h2 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .step {
+      display: flex;
+      gap: 22px;
+      padding-bottom: 44px;
+      position: relative;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .step-num {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 0 5px rgba(29,158,117,0.12);
+    }
+    .step-line {
+      width: 2px;
+      flex: 1;
+      background: rgba(29,158,117,0.2);
+      margin-top: 8px;
+    }
+    .step:last-child .step-line { display: none; }
+    .step-body { padding-top: 9px; }
+    .step-title {
+      font-size: 1.06rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 7px;
+    }
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--slate);
+      line-height: 1.68;
+    }
+    .step-audience {
+      display: inline-flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .step-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .sp-mgmt { background: var(--amber-lt); color: var(--amber); border: 1px solid rgba(232,137,44,0.25); }
+    .sp-faculty { background: var(--teal-lt); color: var(--teal); border: 1px solid rgba(29,158,117,0.25); }
+
+    /* ─── TESTIMONIAL ─── */
+    #testimonial {
+      padding: 88px 0;
+      background: var(--offwhite);
+    }
+    .testimonial-inner {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .testimonial-block {
+      border-left: 5px solid var(--amber);
+      padding-left: 30px;
+      margin-bottom: 26px;
+    }
+    .testimonial-quote {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.12rem, 2.8vw, 1.42rem);
+      color: var(--green);
+      line-height: 1.68;
+      margin-bottom: 20px;
+    }
+    .testimonial-attr { font-size: 0.87rem; color: var(--slate); }
+    .testimonial-attr strong { font-weight: 700; color: var(--green); }
+    .testimonial-result {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(29,158,117,0.08);
+      border: 1px solid rgba(29,158,117,0.2);
+      border-radius: var(--r-sm);
+      padding: 10px 16px;
+      margin-top: 16px;
+      font-size: 0.84rem;
+      color: var(--green);
+    }
+    .testimonial-result strong { color: var(--teal); font-size: 1.1rem; }
+    .testimonial-note {
+      font-size: 0.83rem;
+      color: var(--slate);
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* ─── OUTCOMES ─── */
+    #outcomes {
+      background: var(--white);
+      padding: 64px 0;
+      border-top: 1px solid rgba(13,59,46,0.06);
+    }
+    #outcomes h3 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: rgba(13,59,46,0.07);
+      border-radius: var(--r);
+      overflow: hidden;
+      border: 1px solid rgba(13,59,46,0.07);
+    }
+    .outcome-card {
+      background: var(--white);
+      padding: 32px 28px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .oc-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+      filter: sepia(1) saturate(3) hue-rotate(120deg) brightness(0.85);
+    }
+    .oc-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 5px;
+    }
+    .oc-desc {
+      font-size: 0.87rem;
+      color: var(--slate);
+      line-height: 1.65;
+    }
+
+    /* ─── CTA FORM ─── */
+    #cta-form {
+      background: var(--green);
+      padding: 88px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    #cta-form::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(29,158,117,0.09) 1.2px, transparent 1.2px);
+      background-size: 26px 26px;
+      pointer-events: none;
+    }
+    .form-wrap {
+      max-width: 520px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .form-eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(157,196,183,0.65);
+      margin-bottom: 14px;
+    }
+    #cta-form h2 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.6rem, 4vw, 2.25rem);
+      color: var(--white);
+      margin-bottom: 14px;
+      line-height: 1.22;
+    }
+    .form-sub {
+      color: rgba(157,196,183,0.75);
+      font-size: 0.95rem;
+      margin-bottom: 36px;
+      line-height: 1.75;
+    }
+    .form-fields { display: flex; flex-direction: column; gap: 13px; }
+    .form-field {
+      width: 100%;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.13);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.97rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-field::placeholder { color: rgba(255,255,255,0.28); }
+    .form-field:focus { border-color: var(--teal); background: rgba(255,255,255,0.1); }
+    select.form-field {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.35)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 18px center;
+      padding-right: 44px;
+      cursor: pointer;
+    }
+    select.form-field option { background: var(--green-dk); color: var(--white); }
+    .btn-submit {
+      margin-top: 10px;
+      width: 100%;
+      background: var(--amber);
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.06rem;
+      padding: 18px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      letter-spacing: 0.01em;
+      box-shadow: 0 4px 22px rgba(232,137,44,0.3);
+    }
+    .btn-submit:hover {
+      background: #d47720;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(232,137,44,0.38);
+    }
+    .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+    .form-microcopy {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.26);
+    }
+
+    /* Thank-you state */
+    #thank-you { display: none; padding: 24px 0; }
+    #thank-you.visible { display: block; }
+    .ty-icon {
+      width: 64px; height: 64px;
+      background: rgba(29,158,117,0.18);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 22px;
+      font-size: 1.7rem;
+    }
+    #thank-you h3 {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 1.65rem;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    #thank-you p {
+      color: rgba(157,196,183,0.85);
+      font-size: 0.97rem;
+      line-height: 1.68;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--green-dk);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    footer p {
+      color: rgba(255,255,255,0.22);
+      font-size: 0.76rem;
+      line-height: 1.65;
+    }
+
+    /* ─── STICKY MOBILE CTA ─── */
+    #sticky-cta {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      width: calc(100% - 40px);
+      max-width: 320px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #sticky-cta.visible { opacity: 1; pointer-events: auto; }
+    #sticky-cta a {
+      display: block;
+      background: var(--teal);
+      color: var(--white);
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.97rem;
+      padding: 16px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 10px 32px rgba(13,59,46,0.35);
+      transition: background 0.2s;
+    }
+    #sticky-cta a:hover { background: var(--teal-dk); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (min-width: 600px) {
+      .stat-grid    { grid-template-columns: repeat(3, 1fr); }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .feature-card.featured { grid-column: 1 / -1; }
+      .slip-timeline { flex-direction: row; gap: 0; }
+      .st-item { flex-direction: column; flex: 1; }
+      .st-item:not(:last-child)::after {
+        top: 20px; left: 40px;
+        width: calc(100% - 20px); height: 2px;
+      }
+      .st-body { padding-bottom: 0; }
+      .outcomes-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (min-width: 860px) {
+      .hero-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+      }
+      .hero-text { text-align: left; }
+      .hero-sub { margin-left: 0; margin-right: 0; }
+      .hero-trust { justify-content: flex-start; }
+      .cta-group { flex-direction: row; }
+      .btn-primary { width: auto; max-width: none; }
+      .feature-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .feature-card.featured { grid-column: 1 / -1; }
+      .steps-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0 44px;
+      }
+      .step { flex-direction: column; padding-bottom: 0; }
+      .step-left { flex-direction: row; margin-bottom: 18px; }
+      .step-line { width: auto; height: 2px; flex: 1; margin-top: 0; margin-left: 8px; }
+      #sticky-cta { display: none !important; }
+    }
+
+    @media (max-width: 859px) {
+      #sticky-cta { display: block; }
+      .db-topbar-meta { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .hero-card-wrap, .hc-badge, .db-live-dot, .hc-live-dot { animation: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner container">
+    <a href="#hero" class="logo" aria-label="CampusPulse home">Campus<span>Pulse</span></a>
+    <a href="#cta-form" class="nav-cta">Apply for Pilot →</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     1. HERO
+════════════════════════════════════════ -->
+<section id="hero" aria-label="Hero">
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="orb orb-3" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-text">
+        <div class="hero-badge">✦ Built for Principals, HODs &amp; Management</div>
+        <h1>Stop Reacting<br>to Results.<br>Start Predicting<br>Success</h1>
+        <p class="hero-sub">CampusPulse gives college management real-time visibility into pass rate trajectories, at-risk student counts, and department health — weeks before exam results expose the gap between your targets and reality.</p>
+        <div class="cta-group">
+          <a href="#cta-form" class="btn-primary" id="hero-cta">Apply for the Pilot Programme →</a>
+        </div>
+        <div class="hero-trust" aria-label="Trust signals">
+          <span class="hero-trust-item">Live performance reports</span>
+          <span class="hero-trust-item">No ERP changes needed</span>
+          <span class="hero-trust-item">Live in 30 minutes</span>
+        </div>
+      </div>
+
+      <!-- Management overview card -->
+      <div class="hero-card-wrap" aria-hidden="true">
+        <div class="hero-card">
+          <div class="hc-topbar">
+            <div class="hc-label">Management Overview</div>
+            <div class="hc-live"><div class="hc-live-dot"></div>Live</div>
+          </div>
+          <div class="hc-title">Institution Performance Report</div>
+          <div class="hc-sub">Current semester · All departments</div>
+          <div class="hc-bar-label">
+            <span>Predicted Pass Rate (Avg)</span>
+            <span style="color:var(--amber);font-weight:700;">76%</span>
+          </div>
+          <div class="hc-bar-track">
+            <div class="hc-bar-fill"></div>
+            <div class="hc-bar-target" title="Target: 85%"></div>
+          </div>
+          <div class="hc-bar-legend">Target: 85%</div>
+          <div class="hc-badge">3 Departments Below Pass Rate Target</div>
+          <div class="hc-divider"></div>
+          <div class="hc-row">
+            <span class="hc-row-label">At-Risk Students</span>
+            <span class="hc-row-val bad">18 flagged this week</span>
+          </div>
+          <div class="hc-row">
+            <span class="hc-row-label">Interventions Active</span>
+            <span class="hc-row-val good">11 in progress</span>
+          </div>
+          <div class="hc-row">
+            <span class="hc-row-label">Weekly Report</span>
+            <span class="hc-row-val good">Sent to HODs ✓</span>
+          </div>
+          <div class="hc-row">
+            <span class="hc-row-label">Next Internal Assessment</span>
+            <span class="hc-row-val warn">In 9 days</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     2. SOCIAL PROOF
+════════════════════════════════════════ -->
+<section id="social-proof" aria-label="Trusted by colleges across India">
+  <div class="container">
+    <p class="proof-label">Trusted by Principals &amp; HODs focused on improving student outcomes</p>
+    <p class="proof-states">
+      Currently onboarding pilot institutions across
+      <strong>Maharashtra</strong>, <strong>Tamil Nadu</strong>, <strong>Karnataka</strong> and <strong>Telangana</strong>
+      — priority selection for institutions with active semester cycles.
+    </p>
+    <div class="badge-row">
+      <span class="badge badge-grey">AICTE Approved</span>
+      <span class="badge badge-grey">UGC Recognised</span>
+      <span class="badge badge-teal">✦ NEP 2020 Aligned</span>
+      <span class="badge badge-amber">⬡ AI-Powered Predictions</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     3. PAIN / STATS
+════════════════════════════════════════ -->
+<section id="pain">
+  <div class="container">
+    <h2 class="reveal">Every semester, management reviews pass rates<br>after the damage is already done.</h2>
+    <div class="stat-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-number">67%</div>
+        <p>of student failures could have been prevented with early intervention — AICTE study on engineering colleges</p>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-number">8 weeks</div>
+        <p>average gap between a student starting to struggle and anyone in management being aware of the risk</p>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-number">1 visit</div>
+        <p>is the number of semesters it takes for a pass rate problem to become a management crisis — if nobody caught it early</p>
+      </div>
+    </div>
+    <p class="pain-body reveal">Principals and HODs shouldn't have to wait for result declaration to find out which batches are in trouble. CampusPulse gives management a live intelligence feed — cross-referencing attendance, assessments, and performance patterns across every department — so your institution walks into exam season with a plan, not a prayer.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     4. FEATURES
+════════════════════════════════════════ -->
+<section id="features">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">Platform Capabilities</span>
+      <h2>What management sees.<br>What faculty acts on.</h2>
+      <p class="features-sub">CampusPulse gives Principals and HODs institutional-level oversight, while giving faculty the ground-level alerts and tools to act. One platform. Two levels of intelligence.</p>
+    </div>
+    <div class="feature-grid">
+
+      <!-- Featured: At-Risk Radar -->
+      <div class="feature-card featured reveal">
+        <div class="feat-tag">Early Intervention</div>
+        <span class="feature-icon">🎯</span>
+        <h3>At-Risk Radar — The Semester Slip Detector</h3>
+        <p>AI identifies the "Semester Slip" by connecting attendance dips to performance drops — allowing for intervention while there's still time to course-correct. When a student's trajectory points toward failure, CampusPulse alerts the class advisor and HOD with their full performance profile, weeks before it's too late.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="for-mgmt">For Management</div>
+        <span class="feature-icon">📋</span>
+        <h3>Institution-Wide Performance Reports</h3>
+        <p>Principals and management get automated weekly reports: department-level pass rate predictions, at-risk student counts by batch, and faculty intervention status — without having to ask for them.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="for-mgmt">For Management</div>
+        <span class="feature-icon">📈</span>
+        <h3>Semester-on-Semester Trend Analytics</h3>
+        <p>Management gets a historical view of how each department's pass rates are trending — batch by batch, semester by semester. Spot departments that are consistently underperforming before it becomes a pattern.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <span class="feature-icon">🎓</span>
+        <h3>AI Grade Prediction</h3>
+        <p>CampusPulse analyses attendance patterns, internal marks, and assignment scores to predict each student's end-semester grade — weeks before the exam.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <span class="feature-icon">📊</span>
+        <h3>Faculty Dashboard</h3>
+        <p>A single screen showing every batch's performance health — predicted pass rates, attendance trends, and upcoming assessment gaps. Faculty see what to act on. Updated daily.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <span class="feature-icon">📡</span>
+        <h3>BLE Attendance — Zero Manual Entry</h3>
+        <p>Attendance is recorded automatically as students enter via Bluetooth Low Energy — no QR codes, no proxies, no manual registers. Clean data that feeds directly into prediction models.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     5. AT-RISK RADAR SPOTLIGHT
+════════════════════════════════════════ -->
+<section id="radar">
+  <div class="container">
+    <div class="radar-inner">
+      <div class="radar-eyebrow reveal">Early Intervention</div>
+      <h2 class="reveal">"The At-Risk Radar"</h2>
+      <p class="radar-desc reveal">AI identifies the "Semester Slip" by connecting attendance dips to performance drops — allowing for intervention while there's still time to course-correct. Management is notified. Faculty are given the tools to act. No one is caught off guard at result declaration.</p>
+
+      <div class="slip-timeline">
+
+        <div class="st-item reveal reveal-delay-1">
+          <div class="st-left">
+            <div class="st-dot st-dot-red">↓</div>
+          </div>
+          <div class="st-body">
+            <div class="st-title">Attendance drops below threshold</div>
+            <div class="st-desc">Captured automatically via BLE — no manual entry, no faculty overhead. The first signal of a Semester Slip, logged in real-time.</div>
+            <span class="st-tag tag-red">Week 3–4</span>
+          </div>
+        </div>
+
+        <div class="st-item reveal reveal-delay-2">
+          <div class="st-left">
+            <div class="st-dot st-dot-amber">⚡</div>
+          </div>
+          <div class="st-body">
+            <div class="st-title">AI detects the Semester Slip pattern</div>
+            <div class="st-desc">CampusPulse correlates attendance with internal marks and assignment completion. The model flags a trajectory toward failure — before any human review would catch it.</div>
+            <span class="st-tag tag-amber">Week 5–6</span>
+          </div>
+        </div>
+
+        <div class="st-item reveal reveal-delay-3">
+          <div class="st-left">
+            <div class="st-dot st-dot-teal">✓</div>
+          </div>
+          <div class="st-body">
+            <div class="st-title">Management &amp; faculty alerted — 6 weeks before exams</div>
+            <div class="st-desc">HOD and Principal see the at-risk count on their management dashboard. Faculty receive a full student profile with one-click action. The institution responds before the semester is lost.</div>
+            <span class="st-tag tag-teal">Intervention window open</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     6. PRODUCT VISUAL — Management Dashboard
+════════════════════════════════════════ -->
+<section id="product-visual">
+  <div class="container">
+    <h2 class="reveal">The view your Governing Board<br>has always wanted to see.</h2>
+    <p class="pv-sub reveal">Department-by-department pass rate projections. Updated daily. No manual compilation.</p>
+
+    <div class="dashboard-card reveal">
+      <div class="db-topbar">
+        <div class="db-topbar-left">
+          <div class="db-live-dot" aria-label="Live" title="Live data"></div>
+          <span class="db-topbar-title">CampusPulse — Management Overview</span>
+        </div>
+        <span class="db-topbar-meta">Current Semester · All Departments</span>
+      </div>
+
+      <div class="db-metrics">
+        <div class="db-metric">
+          <div class="db-metric-label">Institution At-Risk</div>
+          <div class="db-metric-val">18</div>
+          <span class="db-metric-badge dbm-red">Across 4 Depts</span>
+        </div>
+        <div class="db-metric">
+          <div class="db-metric-label">Depts Below Target</div>
+          <div class="db-metric-val">3 / 6</div>
+          <span class="db-metric-badge dbm-amber">Needs Review</span>
+        </div>
+        <div class="db-metric">
+          <div class="db-metric-label">Interventions Active</div>
+          <div class="db-metric-val">11</div>
+          <span class="db-metric-badge dbm-teal">In Progress</span>
+        </div>
+      </div>
+
+      <div class="db-table-wrap">
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Semester</th>
+              <th>At-Risk Count</th>
+              <th>Predicted Pass Rate</th>
+              <th>vs Target (85%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Computer Science</td>
+              <td>Sem 5</td>
+              <td><span style="color:#ff6b6b;font-weight:700;">7</span></td>
+              <td><span class="grade-pill gp-amber">72%</span></td>
+              <td><span class="status-dot" aria-hidden="true">🔴</span>−13%</td>
+            </tr>
+            <tr>
+              <td>Mechanical Engg.</td>
+              <td>Sem 3</td>
+              <td><span style="color:#f0a554;font-weight:700;">4</span></td>
+              <td><span class="grade-pill gp-amber">81%</span></td>
+              <td><span class="status-dot" aria-hidden="true">🟡</span>−4%</td>
+            </tr>
+            <tr>
+              <td>Electronics &amp; Comm.</td>
+              <td>Sem 5</td>
+              <td>2</td>
+              <td><span class="grade-pill gp-green">89%</span></td>
+              <td><span class="status-dot" aria-hidden="true">🟢</span>+4%</td>
+            </tr>
+            <tr>
+              <td>Civil Engineering</td>
+              <td>Sem 3</td>
+              <td><span style="color:#ff6b6b;font-weight:700;">5</span></td>
+              <td><span class="grade-pill gp-red">76%</span></td>
+              <td><span class="status-dot" aria-hidden="true">🔴</span>−9%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <p class="visual-caption reveal">Built for Indian semester structures — with the department-level breakdown your management actually needs.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     7. HOW IT WORKS
+════════════════════════════════════════ -->
+<section id="how-it-works">
+  <div class="container">
+    <h2 class="reveal">Up and running in three steps.<br>Zero disruption to your college.</h2>
+    <div class="steps-grid">
+
+      <div class="step reveal reveal-delay-1">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Connect your institution</div>
+          <div class="step-desc">We map your department structure, semester schedule, and batch configuration. No changes to your existing ERP or timetable. Takes 30 minutes.</div>
+          <div class="step-audience">
+            <span class="step-pill sp-mgmt">Management approves</span>
+            <span class="step-pill sp-faculty">IT coordinates</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-2">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">AI learns your patterns</div>
+          <div class="step-desc">CampusPulse analyses historical performance data and builds prediction models calibrated to your college's specific pass rate targets and semester structure.</div>
+          <div class="step-audience">
+            <span class="step-pill sp-faculty">Faculty verify data</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal reveal-delay-3">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Management oversees. Faculty acts.</div>
+          <div class="step-desc">Principals and HODs get live pass rate projections and department health scores. Faculty receive targeted alerts and one-click actions. Weekly performance reports are generated automatically.</div>
+          <div class="step-audience">
+            <span class="step-pill sp-mgmt">Management dashboard</span>
+            <span class="step-pill sp-faculty">Faculty alerts</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     8. TESTIMONIAL
+════════════════════════════════════════ -->
+<section id="testimonial">
+  <div class="container">
+    <div class="testimonial-inner reveal">
+      <div class="testimonial-block">
+        <p class="testimonial-quote">"In the first month, CampusPulse flagged 11 students we would have missed until the end-semester exam. We ran targeted interventions for them. Eight of the eleven passed. That's eight students whose academic year — and our department's pass rate — we saved."</p>
+        <p class="testimonial-attr"><strong>Dr. Priya Ramachandran,</strong> Head of Department — Computer Science <em>(Institution name withheld, pilot programme)</em></p>
+        <div class="testimonial-result">
+          <strong>8 / 11</strong>
+          students at-risk who passed after CampusPulse-triggered intervention — in a single semester pilot
+        </div>
+      </div>
+      <p class="testimonial-note">Limited pilot spots available. Apply below to be considered for the current cohort.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     9. OUTCOMES
+════════════════════════════════════════ -->
+<section id="outcomes">
+  <div class="container">
+    <h3 class="reveal">What your institution gains</h3>
+    <div class="outcomes-grid reveal">
+
+      <div class="outcome-card">
+        <div class="oc-icon">📈</div>
+        <div>
+          <div class="oc-title">Measurable improvement in pass rates</div>
+          <div class="oc-desc">Pilot institutions see meaningful lift in semester pass rates within the first deployment cycle — with documented interventions to back the improvement.</div>
+        </div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-icon">📁</div>
+        <div>
+          <div class="oc-title">A full record of every intervention</div>
+          <div class="oc-desc">Every at-risk flag, every faculty action, and every outcome is logged automatically. Management has a clear view of what was done — and whether it worked.</div>
+        </div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-icon">⚡</div>
+        <div>
+          <div class="oc-title">Zero setup risk</div>
+          <div class="oc-desc">No new hardware beyond BLE sensors. No ERP migration. No faculty retraining. CampusPulse is live within a single working day — or we refund your pilot fee entirely.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     10. CTA FORM
+════════════════════════════════════════ -->
+<section id="cta-form">
+  <div class="form-wrap">
+    <p class="form-eyebrow">Limited Pilot Programme</p>
+    <h2 class="reveal">See your institution's pass rate trajectory — live.</h2>
+    <p class="form-sub reveal">We'll run a 20-minute live demo using your department structure and pass rate targets. No data required upfront. Priority given to institutions with an active semester cycle.</p>
+
+    <form id="demo-form" novalidate class="reveal">
+      <div class="form-fields">
+        <input  class="form-field" id="f-name"    type="text"  name="name"       placeholder="Your name"              required autocomplete="name" />
+        <select class="form-field" id="f-role"    name="role"  required>
+          <option value="" disabled selected>Your role / designation</option>
+          <option value="principal">Principal / Director</option>
+          <option value="hod">Head of Department (HOD)</option>
+          <option value="dean">Dean / Vice Principal</option>
+          <option value="management">Management / Trustee</option>
+          <option value="other">Other</option>
+        </select>
+        <input  class="form-field" id="f-college" type="text"  name="college"    placeholder="Institution name"        required autocomplete="organization" />
+        <input  class="form-field" id="f-email"   type="email" name="email"      placeholder="Official email address"  required autocomplete="email" />
+        <input  class="form-field" id="f-phone"   type="tel"   name="phone"      placeholder="+91 98765 43210"         required autocomplete="tel" />
+      </div>
+      <button type="submit" class="btn-submit" id="submit-btn">Apply for the Pilot Programme →</button>
+      <p class="form-microcopy">No commitment. No spam. Our team will contact you within 24 hours.</p>
+      <p class="form-microcopy" id="form-error" style="color:#ff6b6b;display:none;">Something went wrong — please try again or email us directly.</p>
+    </form>
+
+    <div id="thank-you" role="status" aria-live="polite">
+      <div class="ty-icon" aria-hidden="true">🎓</div>
+      <h3 id="ty-heading">Application received!</h3>
+      <p id="ty-body">Our team will review your institution's profile and contact you within 24 hours to schedule your live demo. We look forward to showing you what CampusPulse can do.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     11. FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">CampusPulse</div>
+  <p>CampusPulse © 2026 — Pilot Programme · Built for Indian higher education · NEP 2020 aligned</p>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     STICKY MOBILE CTA
+════════════════════════════════════════ -->
+<div id="sticky-cta" role="complementary" aria-label="Apply for pilot">
+  <a href="#cta-form">Apply for Pilot →</a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     JS
+════════════════════════════════════════ -->
+<script>
+  /* ── UTM capture ── */
+  function getUTMs() {
+    var p = new URLSearchParams(window.location.search);
+    return {
+      utm_source:   p.get('utm_source')   || '',
+      utm_medium:   p.get('utm_medium')   || '',
+      utm_campaign: p.get('utm_campaign') || '',
+      utm_content:  p.get('utm_content')  || ''
+    };
+  }
+  var utms = getUTMs();
+
+  /* ── Nav scrolled class ── */
+  (function() {
+    var nav = document.getElementById('nav');
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 20); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  /* ── Scroll reveal ── */
+  (function() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('in-view'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('in-view'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  })();
+
+  /* ── Sticky CTA ── */
+  (function() {
+    var stickyCTA = document.getElementById('sticky-cta');
+    var hero      = document.getElementById('hero');
+    var formSec   = document.getElementById('cta-form');
+    var converted = false;
+    function updateSticky() {
+      if (window.innerWidth >= 860 || converted) return;
+      var heroBottom = hero.getBoundingClientRect().bottom;
+      var formTop    = formSec.getBoundingClientRect().top;
+      if (heroBottom < -300 && formTop > window.innerHeight) {
+        stickyCTA.classList.add('visible');
+      } else {
+        stickyCTA.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', updateSticky, { passive: true });
+    window.addEventListener('resize', updateSticky, { passive: true });
+    window._markConverted = function() { converted = true; stickyCTA.classList.remove('visible'); };
+  })();
+
+  /* ── Form submission (Formspree) ── */
+  document.getElementById('demo-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form    = this;
+    var name    = document.getElementById('f-name').value.trim();
+    var role    = document.getElementById('f-role').value;
+    var college = document.getElementById('f-college').value.trim();
+    var email   = document.getElementById('f-email').value.trim();
+    var phone   = document.getElementById('f-phone').value.trim();
+
+    var valid = true;
+    [['f-name', name], ['f-role', role], ['f-college', college], ['f-email', email], ['f-phone', phone]].forEach(function(pair) {
+      var el = document.getElementById(pair[0]);
+      if (!pair[1]) { el.style.borderColor = '#ff6b6b'; valid = false; }
+    });
+    if (!valid) return;
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting application…';
+    document.getElementById('form-error').style.display = 'none';
+
+    fetch('https://formspree.io/f/xojpazbg', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('network');
+      return res.json();
+    })
+    .then(function() {
+      if (window.gtag) {
+        gtag('event', 'generate_lead', {
+          college_name: college,
+          role:         role,
+          utm_source:   utms.utm_source,
+          utm_campaign: utms.utm_campaign
+        });
+      }
+      if (window.fbq) fbq('track', 'Lead', { content_name: 'campuspulse_pilot_application' });
+      if (window.hj)  hj('event', 'pilot_applied');
+
+      form.style.display = 'none';
+      var ty = document.getElementById('thank-you');
+      ty.classList.add('visible');
+      document.getElementById('ty-heading').textContent = 'Application received, ' + name.split(' ')[0] + '!';
+      ty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (window._markConverted) window._markConverted();
+    })
+    .catch(function() {
+      btn.disabled = false;
+      btn.textContent = 'Apply for the Pilot Programme →';
+      document.getElementById('form-error').style.display = 'block';
+    });
+  });
+
+  ['f-name', 'f-role', 'f-college', 'f-email', 'f-phone'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', function() { this.style.borderColor = ''; });
+    document.getElementById(id).addEventListener('input',  function() { this.style.borderColor = ''; });
+  });
+</script>
+
+</body>
+</html>

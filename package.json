@@ -1,0 +1,12 @@
+{
+  "name": "campuspulse-landing",
+  "version": "1.0.0",
+  "description": "CampusPulse smoke-test landing page",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && npx serve public -p 3000"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0"
+  }
+}
