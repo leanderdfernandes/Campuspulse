@@ -1,0 +1,15 @@
+# Environment & secrets — never commit
+.env
+.env.local
+.env.*.local
+
+# Build output — generated, not source
+public/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
