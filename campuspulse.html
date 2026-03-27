@@ -1902,6 +1902,26 @@
     document.getElementById(id).addEventListener('change', function() { this.style.borderColor = ''; });
     document.getElementById(id).addEventListener('input',  function() { this.style.borderColor = ''; });
   });
+
+  /* ── Scroll Management ── */
+  // Force page to load at the top
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
+  // Smooth scroll for internal links without changing URL hash
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      var targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      var target = document.querySelector(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
 </script>
 
 </body>
